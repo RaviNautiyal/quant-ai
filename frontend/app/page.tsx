@@ -70,6 +70,7 @@ const ACCENT_COLORS = [UP, DN, "#c4943a"];
 
 /* ─── Shared CSS ────────────────────────────────────────────────── */
 const GLOBAL_CSS = `
+
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&family=DM+Serif+Display:ital@0;1&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{overflow-x:clip;max-width:100%;background:#111111;}
@@ -107,6 +108,27 @@ html,body{overflow-x:clip;max-width:100%;background:#111111;}
 .step-card:hover{transform:translateY(-4px);}
 
 .feat-card-hover{transition:opacity .55s ease,transform .55s ease,border-color .2s;}
+
+@media (max-width:1024px){
+  .hero-section{grid-template-columns:1fr !important;gap:40px !important;}
+  .features-grid{grid-template-columns:repeat(2,1fr) !important;}
+  .steps-grid{grid-template-columns:1fr !important;}
+  .footer-wrap{flex-direction:column !important;gap:14px !important;}
+}
+@media (max-width:768px){
+  .page-padding{padding-left:20px !important;padding-right:20px !important;}
+  .hero-section{grid-template-columns:1fr !important;gap:28px !important;}
+  .features-grid,.steps-grid{grid-template-columns:1fr !important;}
+  .hero-panel{max-width:100% !important;}
+  .ticker-label{width:80px !important;}
+  .ticker-content{margin-left:80px !important;}
+  .ticker-fade{left:80px !important;}
+  .cta-box{padding:36px 20px !important;}
+  .mobile-hide{display:none !important;}
+  .nav-buttons{gap:10px !important;}
+  .footer-wrap{text-align:center;}
+}
+
 `;
 
 /* ─── Features Section ──────────────────────────────────────────── */
@@ -138,7 +160,7 @@ function FeaturesSection({router}:{router:ReturnType<typeof useRouter>}) {
           </h2>
           <p style={{fontSize:15,color:T2,lineHeight:1.65,fontWeight:300}}>Professional-grade tools powered by AI and advanced algorithms — built for the Indian market.</p>
         </div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10}}>
+        <div className="features-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10}}>
           {FEATURES.map((f,i)=>(
             <div key={i} className="feat-card feat-card-hover"
               onMouseEnter={()=>setHovered(i)} onMouseLeave={()=>setHovered(null)}
@@ -242,22 +264,14 @@ export default function LandingPage() {
     </div>
 
     {/* Right Side */}
-    <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
-      <a href="#features" className="nav-a">
+    <div className="nav-buttons" style={{ display: "flex", alignItems: "center", gap: 24 }}>
+      <a href="#features" className="nav-a mobile-hide">
         Features
       </a>
 
-      <a href="#how-it-works" className="nav-a">
+      <a href="#how-it-works" className="nav-a mobile-hide">
         How it works
       </a>
-
-      <div
-        style={{
-          width: 1,
-          height: 18,
-          background: BDR,
-        }}
-      />
 
       <button
         onClick={() => router.push("/login")}
@@ -404,7 +418,7 @@ export default function LandingPage() {
 </div>
 
         {/* HERO */}
-        <section style={{maxWidth:1400,margin:"0 auto",padding:"88px 40px 100px",display:"grid",gridTemplateColumns:"1fr 420px",gap:60,alignItems:"center"}}>
+        <section className="hero-section page-padding" style={{maxWidth:1400,margin:"0 auto",padding:"88px 40px 100px",display:"grid",gridTemplateColumns:"1fr 420px",gap:60,alignItems:"center"}}>
           <div>
             <div className="fu1" style={{marginBottom:22}}>
               <span style={{display:"inline-flex",alignItems:"center",gap:7,fontSize:12,fontWeight:500,color:T2,background:SURF,border:`0.5px solid ${BDR}`,padding:"5px 13px",borderRadius:20,letterSpacing:"0.03em"}}>
@@ -431,7 +445,7 @@ export default function LandingPage() {
           </div>
 
           {/* Right panel */}
-          <div style={{display:"flex",flexDirection:"column",gap:10}}>
+          <div className="hero-panel" style={{display:"flex",flexDirection:"column",gap:10,width:"100%",maxWidth:420,justifySelf:"center"}}>
             <div style={{background:"rgba(26,26,26,0.50)",border:`0.5px solid ${BDR}`,borderRadius:14,padding:"18px 20px",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)"}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:14}}>
                 <div>
