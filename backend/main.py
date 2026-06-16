@@ -48,7 +48,8 @@ app.add_middleware(
     allow_origins=[
     "http://localhost:3000",
     "https://*.vercel.app",
-         "https://ai-investement-agent-wf36.vercel.app"  # covers all Vercel preview URLs too
+         "https://ai-investement-agent-wf36.vercel.app" ,
+         "https://quant-ai-sooty.vercel.app"# covers all Vercel preview URLs too
 ],
     allow_credentials=True,
     allow_methods=["*"],
