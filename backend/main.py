@@ -77,6 +77,9 @@ app.include_router(charts.router, prefix="/charts", tags=["charts"])
 app.include_router(push.router, prefix="/push", tags=["push"])
 
 # ── Misc ──────────────────────────────────────────────────────────────────────
+@app.get("/ping")
+def ping():
+    return {"status": "ok"}
 @app.get("/")
 def home():
     return {"message": "Backend is running"}
