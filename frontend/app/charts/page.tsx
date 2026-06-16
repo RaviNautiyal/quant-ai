@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   ComposedChart, Line, XAxis, YAxis, CartesianGrid,
@@ -305,7 +305,7 @@ const ChartTooltip = ({active,payload,label}:any) => {
 };
 
 /* ════════════════════════════════════════════════════════════════ */
-export default function ChartsPage() {
+function ChartsInner() {
   const params       = useSearchParams();
   const marketStatus = useMarketStatus();
 
@@ -685,5 +685,19 @@ export default function ChartsPage() {
         </div>
       </div>
     </>
+  );
+}
+
+/* ── Suspense wrapper — required by Next.js App Router for useSearchParams ── */
+export default function ChartsPage() {
+  return (
+    <Suspense fallback={
+      <div style={{ minHeight:"100vh", background:"#111111", display:"flex", alignItems:"center", justifyContent:"center" }}>
+        <div style={{ width:28, height:28, border:"2px solid rgba(61,186,106,0.2)", borderTopColor:"#3dba6a", borderRadius:"50%", animation:"spin .7s linear infinite" }}/>
+        <style>{`@keyframes spin{to{transform:rotate(360deg);}}`}</style>
+      </div>
+    }>
+      <ChartsInner />
+    </Suspense>
   );
 }
