@@ -45,19 +45,16 @@ app = FastAPI(lifespan=lifespan)
 # ── CORS — must be before routers ─────────────────────────────────────────────
 app.add_middleware(
     CORSMiddleware,
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_origins=[
-    "http://localhost:3000",
-    "https://*.vercel.app",
-         "https://ai-investement-agent-wf36.vercel.app" ,
-         "https://quant-ai-sooty.vercel.app",
-         "https://quant-g49n0iaji-ravi-nautiyals-projects.vercel.app"# covers all Vercel preview URLs too
-],
+        "http://localhost:3000",
+        "https://ai-investement-agent-wf36.vercel.app",
+        "https://quant-ai-sooty.vercel.app",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-
 )
-
 # ── Routers ───────────────────────────────────────────────────────────────────
 app.include_router(push_router, prefix="/push")
 app.include_router(ws_router)
