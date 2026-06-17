@@ -179,7 +179,7 @@ export default function AIPage() {
         .chat-input {
           flex: 1; background: transparent; border: none; outline: none;
           font-size: 13px; color: ${T1}; font-family: 'DM Sans', sans-serif;
-          resize: none; line-height: 1.6;
+          resize: none; line-height: 2.6;
         }
         .chat-input::placeholder { color: ${T3}; }
 
@@ -259,7 +259,7 @@ export default function AIPage() {
         </div>
 
         {/* ── MESSAGES ── */}
-        <div className="msg-scroll" style={{ flex: 1, overflowY: "auto", padding: "20px", display: "flex", flexDirection: "column", gap: 12 }}>
+        <div className="msg-scroll" style={{ flex: 1, overflowY: "auto", padding: "20px", display: "flex", flexDirection: "column", gap: 12, minHeight: "0" }}>
 
           {/* Empty state */}
           {messages.length === 0 && (
@@ -320,7 +320,7 @@ export default function AIPage() {
                 backdropFilter: "blur(8px)",
               }}>
                 {msg.role === "user"
-                  ? <p style={{ fontSize: 13, color: T1, lineHeight: 1.6 }}>{msg.text}</p>
+                  ? <p style={{ fontSize: 13, color: T1, lineHeight: 2.6 }}>{msg.text}</p>
                   : <MarkdownText text={msg.text} />
                 }
               </div>

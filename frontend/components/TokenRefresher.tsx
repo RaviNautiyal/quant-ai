@@ -9,8 +9,8 @@ export default function TokenRefresher() {
       const token = localStorage.getItem("token");
       if (!token) return;
       try {
-        const data = await apiFetch("/auth/refresh");
-        localStorage.setItem("token", data.token);
+        const data = await apiFetch("/auth/refresh", { method: "POST" });
+        if (data?.token) localStorage.setItem("token", data.token);
       } catch {
         // 401 → apiFetch already redirects to /login
       }
@@ -21,5 +21,5 @@ export default function TokenRefresher() {
     return () => clearInterval(id);
   }, []);
 
-  return null; // renders nothing, just runs the effect
+  return null;
 }

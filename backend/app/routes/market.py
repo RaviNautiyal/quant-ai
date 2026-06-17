@@ -4,7 +4,7 @@ from app.services.angel_one import ltp_data
 from app.services.price_cache import get_price_or_fetch, set_price
 from app.services.instruments import get_symbol_token
 import yfinance as yf
-
+import time
 router = APIRouter()
 
 def get_user_from_token(authorization: str):
@@ -87,6 +87,7 @@ def get_movers(authorization: str = Header(...)):
                 ltp = cached
             else:
                 resp = ltp_data(exchange, trading_symbol, token)
+                time.sleep(0.45)
                 if not resp.get("status") or not resp.get("data"):
                     continue
                 ltp = float(resp["data"]["ltp"])

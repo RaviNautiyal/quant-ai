@@ -44,6 +44,7 @@ def get_price_or_fetch(symbol: str) -> Optional[float]:
     try:
         from app.services.instruments import get_live_price
         price = get_live_price(symbol)
+        time.sleep(0.45)
         if price and price > 0:
             set_price(symbol, price)
             return price

@@ -381,7 +381,6 @@ export default function Dashboard(){
 
           <div style={{display:"flex",alignItems:"center",gap:10}}>
             <span className="db-clock" style={{fontSize:11,color:T3,fontVariantNumeric:"tabular-nums"}}>{now||"——:——:——"}</span>
-            <button className="pill-btn" onClick={()=>{localStorage.removeItem("token");router.push("/login");}}>Sign out</button>
           </div>
         </div>
 

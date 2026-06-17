@@ -2,52 +2,111 @@
 import { useState, useEffect, useRef } from "react";
 import type { MarketStatus } from "@/hooks/useMarketStatus";
 
-// ── Market Live Badge ─────────────────────────────────────────────────────────
+/* ─── Tokens ────────────────────────────────────────────────────── */
+const BDR = "#2c2c2c";
+const T2  = "#888884";
+const T3  = "#555552";
+const UP  = "#3dba6a";
+
+// ── Market Live Badge ─────────────────────────────────────────────
 export function MarketBadge({ status }: { status: MarketStatus | null }) {
   if (!status) return null;
+  const live = status.is_live;
   return (
-    <div className="flex items-center gap-2">
-      <span
-        className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold tracking-widest uppercase select-none
-          ${status.is_live
-            ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"
-            : "bg-white/5 text-gray-500 border border-white/10"
-          }`}
-      >
-        <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0
-          ${status.is_live ? "bg-emerald-400 animate-pulse" : "bg-gray-600"}`}
-        />
-        {status.is_live ? "Live" : "Closed"}
-      </span>
-      <span className="text-xs text-gray-600 hidden sm:block">
-        {status.is_live ? `Closes ${status.market_close} IST` : `Opens ${status.market_open} IST`}
-      </span>
-    </div>
+    <span style={{
+      display:       "inline-flex",
+      alignItems:    "center",
+      gap:           5,
+      fontSize:      10,
+      fontWeight:    600,
+      letterSpacing: "0.06em",
+      padding:       "3px 10px",
+      borderRadius:  20,
+      border:        `0.5px solid ${live ? "rgba(61,186,106,0.25)" : BDR}`,
+      background:    live ? "rgba(61,186,106,0.07)" : "rgba(255,255,255,0.04)",
+      color:         live ? UP : T3,
+      fontFamily:    "'DM Sans', sans-serif",
+      userSelect:    "none",
+      textTransform: "uppercase",
+    }}>
+      <span style={{
+        width:        5,
+        height:       5,
+        borderRadius: "50%",
+        background:   live ? UP : T3,
+        display:      "inline-block",
+        flexShrink:   0,
+        animation:    live ? "mkt-pulse 1.8s ease-in-out infinite" : "none",
+      }}/>
+      {live ? "Open" : "Closed"}
+      <style>{`
+        @keyframes mkt-pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+      `}</style>
+    </span>
   );
 }
 
-// ── Market Closed Banner ──────────────────────────────────────────────────────
+// ── Market Closed Banner ──────────────────────────────────────────
 export function MarketClosedBanner({ status }: { status: MarketStatus | null }) {
   if (!status || status.is_live) return null;
+
   return (
-    <div className="bg-white/[0.03] border border-white/8 rounded-xl p-3 flex items-center gap-3 text-xs text-gray-500">
-      <span className="w-1.5 h-1.5 rounded-full bg-gray-600 flex-shrink-0" />
-      Market is closed · Prices shown are from last session ·
-      Live updates resume at <span className="text-gray-400 font-medium ml-1">{status.market_open} IST weekdays</span>
+    <div style={{
+      display:        "flex",
+      alignItems:     "center",
+      justifyContent: "space-between",
+      gap:            12,
+      padding:        "9px 14px",
+      borderRadius:   8,
+      background:     "rgba(255,255,255,0.02)",
+      border:         `0.5px solid ${BDR}`,
+      fontFamily:     "'DM Sans', sans-serif",
+      flexWrap:       "wrap",
+    }}>
+      {/* Left */}
+      <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+          stroke={T3} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"
+          style={{ flexShrink:0 }}>
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <span style={{ fontSize:12, color:T2 }}>Market closed</span>
+        <span style={{ width:3, height:3, borderRadius:"50%", background:T3, display:"inline-block", flexShrink:0 }}/>
+        <span style={{ fontSize:12, color:T3 }}>Prices from last session</span>
+      </div>
+
+      {/* Right */}
+      <div style={{ display:"flex", alignItems:"center", gap:6, flexShrink:0 }}>
+        <span style={{ fontSize:11, color:T3 }}>Opens</span>
+        <span style={{
+          fontSize:      11,
+          fontWeight:    500,
+          color:         T2,
+          background:    "rgba(255,255,255,0.04)",
+          border:        `0.5px solid ${BDR}`,
+          borderRadius:  5,
+          padding:       "2px 8px",
+          letterSpacing: "0.02em",
+        }}>
+          {status.market_open} IST
+        </span>
+        <span style={{ fontSize:11, color:T3 }}>weekdays</span>
+      </div>
     </div>
   );
 }
 
-// ── Price Cell with flash animation ──────────────────────────────────────────
+// ── Price Cell with flash animation ──────────────────────────────
 export function PriceCell({
   value,
   prevValue,
   prefix = "₹",
   className = "",
 }: {
-  value: number | null | undefined;
-  prevValue: number | null | undefined;
-  prefix?: string;
+  value:      number | null | undefined;
+  prevValue:  number | null | undefined;
+  prefix?:    string;
   className?: string;
 }) {
   const [flash, setFlash] = useState<"up" | "down" | null>(null);
@@ -62,12 +121,14 @@ export function PriceCell({
   }, [value]);
 
   const flashStyle: React.CSSProperties =
-    flash === "up"   ? { backgroundColor: "rgba(52,211,153,0.18)", borderRadius: 4, transition: "background-color 0.8s ease-out" }
-    : flash === "down" ? { backgroundColor: "rgba(248,113,113,0.18)", borderRadius: 4, transition: "background-color 0.8s ease-out" }
-    : { backgroundColor: "transparent", transition: "background-color 0.8s ease-out" };
+    flash === "up"
+      ? { backgroundColor: "rgba(52,211,153,0.18)",  borderRadius: 4, transition: "background-color 0.8s ease-out" }
+      : flash === "down"
+      ? { backgroundColor: "rgba(248,113,113,0.18)", borderRadius: 4, transition: "background-color 0.8s ease-out" }
+      : { backgroundColor: "transparent",             transition: "background-color 0.8s ease-out" };
 
   if (value == null)
-    return <span className={`px-1 inline-block text-gray-600 ${className}`}>—</span>;
+    return <span style={flashStyle} className={`px-1 inline-block ${className}`}>—</span>;
 
   return (
     <span style={flashStyle} className={`px-1 inline-block ${className}`}>
