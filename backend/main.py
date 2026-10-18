@@ -50,6 +50,7 @@ app.add_middleware(
         "http://localhost:3000",
         "https://ai-investement-agent-wf36.vercel.app",
         "https://quant-ai-sooty.vercel.app",
+        "https://backendquant-bwgaetffefbhbrfz.centralindia-01.azurewebsites.net",
     ],
     allow_credentials=True,
     allow_methods=["*"],
